@@ -28,7 +28,7 @@ const useFirebase = () => {
     }
 
 
-    // for user state change
+    // for user state change or observe
     useEffect(() => {
         onAuthStateChanged(auth, user => {
             setUser(user);
