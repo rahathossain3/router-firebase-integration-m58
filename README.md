@@ -1,70 +1,219 @@
-# Getting Started with Create React App
+Video 1
+	58-1 Module Introduction and Basic Project Setup
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+React router add, firebase add,
 
-In the project directory, you can run:
+Project initialize 
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Video 2
+	58-2 Create Use Firebase hook for shared authentication
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Destructuring er object use kora valo
 
-### `npm test`
+Video 3
+	58-3 Add Google Sign using custom hook with on State Change
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+import { useState } from "react"
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import app from "../firebase.init";
+ 
+const auth = getAuth(app);
+ 
+// google provider
+const googleProvider = new GoogleAuthProvider();
+ 
+ 
+const useFirebase = () => {
+    const [user, setUser] = useState({});
+ 
+    // for google
+    const singInWithGoogle = () => {
+        signInWithPopup(auth, googleProvider)
+            .then(result => {
+                const user = result.user;
+                setUser(user);
+                console.log(user);
+            })
+    }
+ 
+    // return [user, setUser];
+    return {
+        user,
+        singInWithGoogle
+    }
+ 
+}
+ 
+export default useFirebase;
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Video 4
+58-4 Implement Sign out and display user logged in User name
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+// for user state change
+    useEffect(() => {
+        onAuthStateChanged(auth, user => {
+            setUser(user);
+        })
+    }, [])
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    //sign out
+    const handleSignOut = () => {
+        signOut(auth)
+            .then(() => { });
+    }
+ 
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Optional chaining 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+ 
+ <span> {user?.displayName && user.displayName}</span>
+ 
+ {
+   user?.uid
+   ?
+   <button onClick={handleSignOut}>Sign Out</button>
+   :
+    <Link to="/login">Login</Link>
+      }
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+https://github.com/CSFrequency/react-firebase-hooks
 
-## Learn More
+Install it:
+npm install --save react-firebase-hooks
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+Video 5
+58-5 Explore and Install React Firebase Hooks
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+React Firebase Hooks install
+npm install --save react-firebase-hooks
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Video 6
+	58-6 Use React Firebase Hook to manage user authentication
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Login.js
 
-### Advanced Configuration
+import { getAuth } from 'firebase/auth';
+import app from '../../firebase.init';
+ 
+//auth call ing
+const auth = getAuth(app);
+ 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+import { useSignInWithGoogle } from 'react-firebase-hooks/auth'
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+    //from react-firebase-hooks
+   const [signInWithGoogle, user] = useSignInWithGoogle(auth);
+ 
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    <button onClick={() => signInWithGoogle()}>Google Sign In</button>
+
+
+Header.js
+
+    const auth = getAuth()
+    const [user] = useAuthState(auth)
+
+
+  <button onClick={() => signOut(auth)}>Sign Out</button>
+
+Home.js
+
+    const auth = getAuth(app);
+    const [user] = useAuthState(auth);
+
+
+
+Video 7
+58-7 Introduction to Protected Route and Require Auth
+
+
+Private / protected  Route
+
+App.js
+ 
+ <Route path='/orders' element={
+          <RequireAuth>
+            <Orders></Orders>
+          </RequireAuth>
+        }></Route>
+
+
+RequireAuth.js
+	
+ 
+import { getAuth } from 'firebase/auth';
+import React from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { Navigate, useLocation } from 'react-router-dom';
+import app from '../../firebase.init';
+ 
+const auth = getAuth(app);
+ 
+const RequireAuth = ({ children }) => {
+ 
+    const [user] = useAuthState(auth);
+ 
+    const location = useLocation();
+ 
+    // condition
+    if (!user) {
+ 
+        return <Navigate to="/login" state={{ from: location }} replace />;
+ 
+    }
+ 
+    return children;
+};
+ 
+export default RequireAuth;
+ 
+Video 8
+	58-8 Module Summary and Implement Auth Redirect
+
+Back to old route automatic
+
+Login .js
+
+ 
+    // for require page location
+    const location = useLocation();
+    const navigate = useNavigate();
+ 
+    const from = location?.state?.from?.pathname || '/';
+ 
+    const handleGoogleSignIn = () => {
+        signInWithGoogle()
+            .then(() => {
+                navigate(from, { replace: true })
+            })
+    }
+
+
+  <button onClick={handleGoogleSignIn}>Google Sign In</button>
+
+
+
+
+Hidden route
+
+Jodi login kora / user  thake taile dekhabe naile dekhabe na
+
+     {
+                   user &&
+                    <>
+                        <Link to='/vip'> VIP</Link>
+                    </>
+                }
+
+
