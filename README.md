@@ -1,4 +1,4 @@
-Video 1
+## Video 1
 	58-1 Module Introduction and Basic Project Setup
 
 
@@ -7,12 +7,12 @@ React router add, firebase add,
 Project initialize 
 
 
-Video 2
+## Video 2
 	58-2 Create Use Firebase hook for shared authentication
 
 Destructuring er object use kora valo
 
-Video 3
+## Video 3
 	58-3 Add Google Sign using custom hook with on State Change
 
 import { useState } from "react"
@@ -49,7 +49,7 @@ const useFirebase = () => {
 export default useFirebase;
 
 
-Video 4
+## Video 4
 58-4 Implement Sign out and display user logged in User name
 
 // for user state change
@@ -88,14 +88,14 @@ npm install --save react-firebase-hooks
 
 
 
-Video 5
+## Video 5
 58-5 Explore and Install React Firebase Hooks
 
 React Firebase Hooks install
 npm install --save react-firebase-hooks
 
 
-Video 6
+## Video 6
 	58-6 Use React Firebase Hook to manage user authentication
 
 
@@ -134,7 +134,7 @@ Home.js
 
 
 
-Video 7
+## Video 7
 58-7 Introduction to Protected Route and Require Auth
 
 
@@ -178,7 +178,7 @@ const RequireAuth = ({ children }) => {
  
 export default RequireAuth;
  
-Video 8
+## Video 8
 	58-8 Module Summary and Implement Auth Redirect
 
 Back to old route automatic
